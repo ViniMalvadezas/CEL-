@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title> Cadastro | CEL 🦷 </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        .input {
+            position: relative;
+            text-align: center;
+            border-radius: 10px;
+            border-style: solid;
+            border-color: black;
+            width: 260px;
+            height: 37px;
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        .foto {
+            width: 180px;
+            height: 150px;
+        }
+
+        .botao {
+            position: relative;
+            width: 220px;
+            height: 45px;
+            border-radius: 10px;
+            border-style: solid;
+            border-color: black;
+            background-color: rgb(56, 164, 207);
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 22px;
+        }
+
+        .botao:hover {
+            background-color: rgb(64, 186, 235);
+        }
+
+        .input:hover {
+            border-color: rgb(56, 164, 207);
+        }
+
+        .input:hover::placeholder {
+            color: rgb(56, 164, 207);
+        }
+    </style>
+
+</head>
+
+<div class="container-fluid">
+    <div class="row">
+        <div style="background-color: rgb(56, 164, 207);" class="col-md-2">
+        </div>
+
+        <div style="background-image:linear-gradient(to right, rgb(255,255,255),rgb(231,231,231)) ;" class="col-md-8">
+            <center>
+
+                <br>
+
+                <img class="foto" src="logo.png" alt="">
+
+                <br>
+
+                <p style="font-size: 17px; font-family: Arial, Helvetica, sans-serif">Preencha os dados para se
+                    cadastrar!</p>
+                <input id="input1" placeholder="Nome de usuário" class="input" type="text"> <br>
+                <p></p>
+                <input id="input2" placeholder="e-mail" class="input" type="email"> <br>
+                <p></p>
+                <input id="input3" placeholder="Senha" class="input" type="password"> <br>
+                <p></p>
+                <input id="input4" placeholder="Telefone" class="input" type="number"> <br>
+                <p></p>
+                <input maxlength="11px" id="input5" placeholder="CPF" class="input" type="text"> <br>
+                <p></p>
+                <input id="input6" placeholder="Data de Nascimento" class="input" type="text"> <br> <br>
+
+                <button onclick="cadastraUser()" class="botao">
+                    Cadastrar-se
+                </button>
+                <p></p>
+                <a href="../index.html">
+                    <p style="font-size: 20px; color: rgb(81, 190, 233); font-family: Arial, Helvetica, sans-serif">Já
+                        tem uma conta? Clique aqui!</p>
+                </a>
+                <br>
+            </center>
+        </div>
+
+        <div style="background-color: rgb(56, 164, 207);" class="col-md-2">
+        </div>
+    </div>
+</div>
+
+<body>
+
+</body>
+
+</html>
+
+<script>
+
+    var users = []
+
+    document.addEventListener("keypress", function (e) {
+
+        if (e.key === "Enter") {
+
+            if (document.getElementById("input1").value == "" || document.getElementById("input2").value == "" || document.getElementById("input3").value == "" || document.getElementById("input4").value == "" || document.getElementById("input5").value == "" || document.getElementById("input6").value == "") {
+
+                alert("Preencha todos os campos corretamente!")
+
+            }
+            else {
+                cadastraUser()
+            }
+        }
+    })
+
+    function cadastraUser() {
+        var usuario = document.getElementById("input1").value
+        var email = document.getElementById("input2").value
+        var senha = document.getElementById("input3").value
+        var telefone = document.getElementById("input4").value
+        var cpf = document.getElementById("input5").value
+        var dtnasc = document.getElementById("input6").value
+
+        if (JSON.parse(localStorage.getItem("usuarios")) != null) {
+            users = JSON.parse(localStorage.getItem("usuarios"))
+        }
+
+        var user = {
+            uu: usuario,
+            ue: email,
+            us: senha,
+            ut: telefone,
+            uc: cpf,
+            ud: dtnasc
+        }
+
+        if (usuario == "" || email == "" || senha == "" || telefone == "" || cpf == "" || dtnasc == "") {
+
+            alert("Preencha todos os campos corretamente!")
+
+        }
+
+        else {
+
+            var cpfL = cpf.split('')
+
+            if (cpfL.length < 11) {
+
+                alert("Digite seu CPF completo!")
+
+            }
+
+            else {
+
+                if (!verificaCPF(cpf)) {
+                    users.push(user)
+
+                    localStorage.setItem("usuarios", JSON.stringify(users))
+
+                    alert("Usuário cadastrado!")
+                    alert("Redirecionando para a agenda...")
+
+                    window.location.href = ("agenda.html")
+
+                }
+                else {
+
+                    alert("Este CPF já está cadastrado!")
+
+                }
+
+                document.getElementById("input1").value = ""
+                document.getElementById("input2").value = ""
+                document.getElementById("input3").value = ""
+                document.getElementById("input4").value = ""
+                document.getElementById("input5").value = ""
+                document.getElementById("input6").value = ""
+
+            }
+        }
+    }
+
+    function verificaCPF(cpf) {
+        for (usuario of users) {
+            if (usuario.uc == cpf) {
+                return true
+            }
+        }
+        return false
+    }
+
+</script>
